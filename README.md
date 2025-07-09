@@ -1,16 +1,42 @@
-# smbs_infolab_flutter_test
+# SMBS InfoLab Flutter Test
 
-A new Flutter project.
+This project is my submission for the Flutter machine test provided by **SMBS Info Solutions**.
 
-## Getting Started
+## 📱 App Overview
 
-This project is a starting point for a Flutter application.
+- **Login Screen**  
+  Users can log in using their email and password. Upon successful login, an authentication token is generated, saved in Shared Preferences, and displayed in a toast message. The app then navigates to the Home screen.
 
-A few resources to get you started if this is your first Flutter project:
+- **Splash Screen**  
+  When the app launches, the splash screen checks whether the authentication token exists in Shared Preferences.
 
-- [Lab: Write your first Flutter app](https://docs.flutter.dev/get-started/codelab)
-- [Cookbook: Useful Flutter samples](https://docs.flutter.dev/cookbook)
+  - If the token is present, the app navigates directly to the Home screen.
+  - If not, it navigates to the Login screen.
 
-For help getting started with Flutter development, view the
-[online documentation](https://docs.flutter.dev/), which offers tutorials,
-samples, guidance on mobile development, and a full API reference.
+- **Home Screen**  
+  This screen displays a list of products fetched from an API.  
+  It includes a search bar for filtering products by name.  
+  The app bar contains a Logout button that clears the stored token and navigates back to the Login screen.
+
+- **Product View Screen**  
+  When a product is tapped, the app navigates to the Product View screen, passing the product ID.  
+  The product details are fetched from the API using this ID.  
+  This screen also features Edit and Delete buttons at the bottom for modifying or removing the product.
+
+## 🔗 GitHub Repository
+
+[https://github.com/vishag002/smbs_infolab_flutter_test](https://github.com/vishag002/smbs_infolab_flutter_test)
+
+## 📦 APK
+
+The built APK is attached to the email sent to HR.
+
+## 🛠 Tech Stack
+
+- Flutter
+- Dart
+- Shared Preferences for local storage
+- HTTP package for API calls
+- FlutterToast package for toast
+
+---
