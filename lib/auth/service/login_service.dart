@@ -1,9 +1,10 @@
 import 'dart:convert';
 import 'package:http/http.dart' as http;
+import 'package:smbs_infolab_flutter_test/utilis/constants.dart';
 
 class LoginService {
   Future<String?> login(String username, String password) async {
-    final url = Uri.parse("https://dummyjson.com/auth/login");
+    final url = Uri.parse(loginUrl);
 
     final response = await http.post(
       url,

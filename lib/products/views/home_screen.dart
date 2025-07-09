@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:smbs_infolab_flutter_test/auth/views/login_screen.dart';
 import 'package:smbs_infolab_flutter_test/products/models/product_model.dart';
 import 'package:smbs_infolab_flutter_test/products/service/product_api_service.dart';
+import 'package:smbs_infolab_flutter_test/products/views/product_detail_screen.dart';
 import 'package:smbs_infolab_flutter_test/products/widgets/product_card.dart';
 import 'package:smbs_infolab_flutter_test/utilis/token_helper.dart';
 
@@ -14,6 +15,25 @@ class HomeScreen extends StatefulWidget {
 
 class _HomeScreenState extends State<HomeScreen> {
   late Future<List<ProductModel>> _itemsList;
+  final TextEditingController searchController = TextEditingController();
+  final ProductApiService apiService = ProductApiService();
+
+  @override
+  void initState() {
+    super.initState();
+    _itemsList = ProductApiService().getItems();
+  }
+
+  //
+  void searchFun(String query) {
+    setState(() {
+      if (query.isEmpty) {
+        _itemsList = apiService.getItems();
+      } else {
+        _itemsList = apiService.searchItems(query);
+      }
+    });
+  }
 
   //logout function
   Future<void> logoutFun() async {
@@ -22,19 +42,14 @@ class _HomeScreenState extends State<HomeScreen> {
     Navigator.pushAndRemoveUntil(
       context,
       MaterialPageRoute(builder: (context) => const LoginScreen()),
-      (route) => false, // Remove all previous routes
+      (route) => false,
     );
-  }
-
-  @override
-  void initState() {
-    super.initState();
-    _itemsList = ProductApiService().getItems();
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: Colors.white,
       appBar: AppBar(
         title: Text("Shopping App"),
         centerTitle: true,
@@ -51,20 +66,39 @@ class _HomeScreenState extends State<HomeScreen> {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            Container(
-              height: MediaQuery.of(context).size.height * 0.2,
-              width: MediaQuery.of(context).size.width,
-              margin: const EdgeInsets.all(10),
-              decoration: BoxDecoration(
-                borderRadius: BorderRadius.circular(30),
-                image: DecorationImage(
-                  image: NetworkImage(
-                    "https://static.vecteezy.com/system/resources/thumbnails/003/240/364/small/shopping-online-on-phone-paper-art-modern-pink-background-gifts-box-free-vector.jpg",
-                  ),
-                  fit: BoxFit.fill,
+            Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 15, vertical: 10),
+              child: SizedBox(
+                height: 65,
+                width: double.infinity,
+                //color: Colors.grey,
+                child: SearchBar(
+                  controller: searchController,
+                  onSubmitted: searchFun,
+                  hintText: "Search products...",
+                  onTap: () {
+                    searchController.clear();
+                    searchFun('');
+                  },
                 ),
               ),
             ),
+            SizedBox(height: 10),
+
+            // Container(
+            //   height: MediaQuery.of(context).size.height * 0.2,
+            //   width: MediaQuery.of(context).size.width,
+            //   margin: const EdgeInsets.all(10),
+            //   decoration: BoxDecoration(
+            //     borderRadius: BorderRadius.circular(30),
+            //     image: DecorationImage(
+            //       image: NetworkImage(
+            //         "https://static.vecteezy.com/system/resources/thumbnails/003/240/364/small/shopping-online-on-phone-paper-art-modern-pink-background-gifts-box-free-vector.jpg",
+            //       ),
+            //       fit: BoxFit.fill,
+            //     ),
+            //   ),
+            // ),
             const SizedBox(height: 10),
             Padding(
               padding: const EdgeInsets.only(left: 16.0), // Add left space
@@ -95,11 +129,22 @@ class _HomeScreenState extends State<HomeScreen> {
                         ),
                     itemCount: items!.length,
                     itemBuilder: (context, index) {
-                      return productCard(
-                        context: context,
-                        imageUrl: items[index].imageUrl,
-                        productName: items[index].title,
-                        productPrice: "\$${items[index].price}", // fix here
+                      return InkWell(
+                        onTap: () {
+                          Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                              builder: (context) =>
+                                  ProductDetailScreen(id: items[index].id),
+                            ),
+                          );
+                        },
+                        child: productCard(
+                          context: context,
+                          imageUrl: items[index].imageUrl,
+                          productName: items[index].title,
+                          productPrice: "\$${items[index].price}", // fix here
+                        ),
                       );
                     },
                   );

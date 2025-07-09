@@ -59,9 +59,9 @@ Widget productCard({
             ),
             IconButton(
               onPressed: () {
-                ScaffoldMessenger.of(context).showSnackBar(
-                  SnackBar(content: Text("$productName added to cart")),
-                );
+                // ScaffoldMessenger.of(context).showSnackBar(
+                //   SnackBar(content: Text("$productName added to cart")),
+                // );
               },
               icon: Icon(Icons.favorite_outline),
             ),

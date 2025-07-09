@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:smbs_infolab_flutter_test/products/views/home_screen.dart';
 import 'package:smbs_infolab_flutter_test/auth/views/login_screen.dart';
 import 'package:smbs_infolab_flutter_test/utilis/token_helper.dart';
+import 'package:lottie/lottie.dart';
 
 class SplashScreen extends StatefulWidget {
   @override
@@ -17,7 +18,7 @@ class _SplashScreenState extends State<SplashScreen> {
 
   Future<void> tokenStatus() async {
     await Future.delayed(
-      const Duration(seconds: 2),
+      const Duration(seconds: 3),
     ); // Optional delay to show splash
     final token = await TokenHelper.getToken();
 
@@ -41,8 +42,12 @@ class _SplashScreenState extends State<SplashScreen> {
     return Scaffold(
       backgroundColor: Colors.white,
       body: Center(
-        // TODO: Add Lottie animation later if needed
-        child: CircularProgressIndicator(), // Placeholder while checking token
+        child: Lottie.asset(
+          'assetts/lottie/Animation - 1752047579950.json',
+          width: 200,
+          height: 200,
+          fit: BoxFit.fill,
+        ),
       ),
     );
   }
